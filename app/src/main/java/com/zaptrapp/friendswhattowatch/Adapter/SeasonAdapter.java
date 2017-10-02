@@ -8,12 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.zaptrapp.friendswhattowatch.Model.SeriesInfo;
 import com.zaptrapp.friendswhattowatch.R;
 import com.zaptrapp.friendswhattowatch.SeasonActivity;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -35,18 +38,19 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.MyViewHold
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
-        View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_movie_recycler,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_seasons_recycler,parent,false);
         return new MyViewHolder(view,this,mSeasons);
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        if(mSeasons.get(position).season_number<1){
-            return;
-        }else {
             //bind items to view
             Glide.with(mContext).load(IMAGE_URL_BASE + mSeasons.get(position).poster_path).into(holder.imageView);
-        }
+            holder.title.setText("Season "+mSeasons.get(position).season_number);
+            String seasonDetailsText = "Air Date: "+mSeasons.get(position).air_date+"\n"+
+                    "Episodes: "+mSeasons.get(position).episode_count;
+            holder.details.setText(seasonDetailsText);
+
     }
 
 
@@ -57,6 +61,8 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView imageView;
+        TextView title;
+        TextView details;
         SeasonAdapter adapter;
         private List<SeriesInfo.Seasons> mSeasons;
 
@@ -65,6 +71,8 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.MyViewHold
             super(itemView);
             this.adapter = seasonAdapter;
             imageView = itemView.findViewById(R.id.imageViewRecycler);
+            title = itemView.findViewById(R.id.seasonTitle);
+            details = itemView.findViewById(R.id.seasonDetails);
             itemView.setOnClickListener(this);
             mSeasons = seasons;
         }
