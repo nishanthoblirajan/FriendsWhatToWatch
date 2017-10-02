@@ -31,9 +31,11 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.MyViewHold
 
     private List<SeriesInfo.Seasons> mSeasons;
     private Context mContext;
+    private int seriesId;
 
-    public SeasonAdapter(List<SeriesInfo.Seasons> seasons) {
+    public SeasonAdapter(List<SeriesInfo.Seasons> seasons,int seriesId) {
         mSeasons = seasons;
+        this.seriesId = seriesId;
     }
 
     @Override
@@ -86,6 +88,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.MyViewHold
             SeriesInfo.Seasons season = mSeasons.get(mPosition);
             Intent intent = new Intent(view.getContext(), SeasonActivity.class);
             intent.putExtra("seasonClicked",season);
+            intent.putExtra("seriesClicked",seriesId);
             view.getContext().startActivity(intent);
         }
     }

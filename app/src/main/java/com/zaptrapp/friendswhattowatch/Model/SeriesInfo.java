@@ -5,13 +5,14 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Nishanth on 02-Oct-17.
  */
 
-public class SeriesInfo {
+public class SeriesInfo implements Parcelable {
 
 
 
@@ -141,4 +142,81 @@ public class SeriesInfo {
             }
         };
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.backdrop_path);
+        dest.writeList(this.created_by);
+        dest.writeString(this.first_air_date);
+        dest.writeList(this.genres);
+        dest.writeString(this.homepage);
+        dest.writeInt(this.id);
+        dest.writeByte(this.in_production ? (byte) 1 : (byte) 0);
+        dest.writeString(this.last_air_date);
+        dest.writeString(this.name);
+        dest.writeList(this.networks);
+        dest.writeInt(this.number_of_episodes);
+        dest.writeInt(this.number_of_seasons);
+        dest.writeString(this.original_language);
+        dest.writeString(this.original_name);
+        dest.writeString(this.overview);
+        dest.writeDouble(this.popularity);
+        dest.writeString(this.poster_path);
+        dest.writeList(this.production_companies);
+        dest.writeTypedList(this.seasons);
+        dest.writeString(this.status);
+        dest.writeString(this.type);
+        dest.writeDouble(this.vote_average);
+        dest.writeInt(this.vote_count);
+    }
+
+    public SeriesInfo() {
+    }
+
+    protected SeriesInfo(Parcel in) {
+        this.backdrop_path = in.readString();
+        this.created_by = new ArrayList<Created_by>();
+        in.readList(this.created_by, Created_by.class.getClassLoader());
+        this.first_air_date = in.readString();
+        this.genres = new ArrayList<Genres>();
+        in.readList(this.genres, Genres.class.getClassLoader());
+        this.homepage = in.readString();
+        this.id = in.readInt();
+        this.in_production = in.readByte() != 0;
+        this.last_air_date = in.readString();
+        this.name = in.readString();
+        this.networks = new ArrayList<Networks>();
+        in.readList(this.networks, Networks.class.getClassLoader());
+        this.number_of_episodes = in.readInt();
+        this.number_of_seasons = in.readInt();
+        this.original_language = in.readString();
+        this.original_name = in.readString();
+        this.overview = in.readString();
+        this.popularity = in.readDouble();
+        this.poster_path = in.readString();
+        this.production_companies = new ArrayList<Production_companies>();
+        in.readList(this.production_companies, Production_companies.class.getClassLoader());
+        this.seasons = in.createTypedArrayList(Seasons.CREATOR);
+        this.status = in.readString();
+        this.type = in.readString();
+        this.vote_average = in.readDouble();
+        this.vote_count = in.readInt();
+    }
+
+    public static final Parcelable.Creator<SeriesInfo> CREATOR = new Parcelable.Creator<SeriesInfo>() {
+        @Override
+        public SeriesInfo createFromParcel(Parcel source) {
+            return new SeriesInfo(source);
+        }
+
+        @Override
+        public SeriesInfo[] newArray(int size) {
+            return new SeriesInfo[size];
+        }
+    };
 }

@@ -5,6 +5,7 @@ import com.zaptrapp.friendswhattowatch.Model.Movie;
 import com.zaptrapp.friendswhattowatch.Model.MovieResponse;
 import com.zaptrapp.friendswhattowatch.Model.SeasonInfo;
 import com.zaptrapp.friendswhattowatch.Model.SeriesInfo;
+import com.zaptrapp.friendswhattowatch.Model.SeriesListInfo;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+
+import static android.R.attr.apiKey;
 
 /**
  * Created by nishanth on 26/09/17.
@@ -34,6 +37,10 @@ public interface ApiInterface {
 
     @GET("discover/movie?primary_release_year=2017&sort_by=vote_average.desc")
     Observable<MovieResponse> getBestOf2017Movies(@Query("api_key") String apiKey);
+
+
+    @GET("tv/popular")
+    Observable<SeriesListInfo> getTopRated(@Query("page")int page,@Query("api_key") String apiKey);
 
     //For receiving information about a tv series with the tvseries id (here: Friends = 1668)
     @GET("tv/{tv_id}")

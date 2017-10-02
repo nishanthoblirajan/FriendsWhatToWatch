@@ -5,6 +5,8 @@ import android.util.DisplayMetrics;
 
 import java.util.Random;
 
+import static android.R.attr.data;
+
 /**
  * Created by Nishanth on 02-Oct-17.
  */
@@ -25,8 +27,12 @@ public class Utils {
     }
 
     public static String convertTMDBDate(String date){
-        String[] data = date.split("-");
-        return data[2]+"-"+data[1]+"-"+data[0];
+        if(date!=null) {
+            String[] data = date.split("-");
+            return data[2] + "-" + data[1] + "-" + data[0];
+        }
+        return "N/A";
+
     }
 }
 

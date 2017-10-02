@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -27,22 +29,32 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.MyViewHo
 
     private List<SeasonInfo.Episodes> mEpisodes;
     private Context mContext;
+    int seriesId;
 
-    public EpisodeAdapter(List<SeasonInfo.Episodes> episodes) {
+    public EpisodeAdapter(List<SeasonInfo.Episodes> episodes,int seriesId) {
         mEpisodes = episodes;
+        this.seriesId = seriesId;
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
-        View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_movie_recycler,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_episodes_recycler,parent,false);
         return new MyViewHolder(view,this,mEpisodes);
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+        SeasonInfo.Episodes episode = mEpisodes.get(position);
         //bind items to view
-        Glide.with(mContext).load(IMAGE_URL_BASE+mEpisodes.get(position).still_path).into(holder.imageView);
+        if(episode!=null) {
+            Glide.with(mContext).load(IMAGE_URL_BASE +episode.still_path).into(holder.episodeImage);
+            holder.episodeName.setText(episode.name);
+            holder.episodeNumber.setText(String.valueOf(episode.episode_number));
+            holder.episodeOverview.setText(episode.overview);
+        }
+//        Glide.with(mContext).load(IMAGE_URL_BASE+mEpisodes.get(position).still_path).into(holder.imageView);
+
     }
 
 
@@ -52,22 +64,21 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.MyViewHo
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        ImageView imageView;
+        ImageView episodeImage;
         EpisodeAdapter adapter;
+        TextView episodeName;
+        TextView episodeOverview;
+        TextView episodeNumber;
         private List<SeasonInfo.Episodes> mEpisodes;
 
 
         public MyViewHolder(View itemView, EpisodeAdapter episodeAdapter, List<SeasonInfo.Episodes> episodes) {
             super(itemView);
             this.adapter = episodeAdapter;
-            imageView = itemView.findViewById(R.id.imageViewRecycler);
-//            DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
-//            int densityDpi = (int)(metrics.density * 160f);
-//
-//            android.view.ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
-//            layoutParams.width = (500*160)/densityDpi;
-//            layoutParams.height = RecyclerView.LayoutParams.WRAP_CONTENT;
-//            imageView.setLayoutParams(layoutParams);
+            episodeImage = itemView.findViewById(R.id.imageViewEpisodeRecycler);
+            episodeName = itemView.findViewById(R.id.episodeName);
+            episodeNumber = itemView.findViewById(R.id.episodeNumber);
+            episodeOverview = itemView.findViewById(R.id.episodeOverview);
             itemView.setOnClickListener(this);
             mEpisodes = episodes;
         }
@@ -80,6 +91,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.MyViewHo
             SeasonInfo.Episodes episode= mEpisodes.get(mPosition);
             Log.d("EpisodeAdapter", "onClick: "+episode.name);
             Intent intent = new Intent(view.getContext(), EpisodeActivity.class);
+            intent.putExtra("seriesClicked",seriesId);
             intent.putExtra("episodeClicked",episode);
             view.getContext().startActivity(intent);
         }
