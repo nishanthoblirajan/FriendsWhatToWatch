@@ -23,5 +23,10 @@ public class Utils {
         Random r = new Random();
         return r.nextInt(max - min + 1) + min;
     }
+
+    public static String convertTMDBDate(String date){
+        String[] data = date.split("-");
+        return data[2]+"-"+data[1]+"-"+data[0];
+    }
 }
 

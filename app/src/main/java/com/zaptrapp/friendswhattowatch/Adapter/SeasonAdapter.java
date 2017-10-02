@@ -15,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.zaptrapp.friendswhattowatch.Model.SeriesInfo;
 import com.zaptrapp.friendswhattowatch.R;
 import com.zaptrapp.friendswhattowatch.SeasonActivity;
+import com.zaptrapp.friendswhattowatch.Utility.Utils;
 
 import org.w3c.dom.Text;
 
@@ -47,7 +48,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.MyViewHold
             //bind items to view
             Glide.with(mContext).load(IMAGE_URL_BASE + mSeasons.get(position).poster_path).into(holder.imageView);
             holder.title.setText("Season "+mSeasons.get(position).season_number);
-            String seasonDetailsText = "Air Date: "+mSeasons.get(position).air_date+"\n"+
+            String seasonDetailsText = "Air Date: "+ Utils.convertTMDBDate(mSeasons.get(position).air_date)+"\n"+
                     "Episodes: "+mSeasons.get(position).episode_count;
             holder.details.setText(seasonDetailsText);
 
