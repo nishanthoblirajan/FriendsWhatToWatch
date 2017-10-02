@@ -38,10 +38,11 @@ public class SeasonActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewSeasons);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, Utils.calculateNoOfColumns(this)));
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        dataToView();
+        getEpisodeList();
     }
 
-    private void dataToView() {
+
+    private void getEpisodeList() {
         SeriesInfo.Seasons receivedSeason = getIntent().getParcelableExtra("seasonClicked");
         Log.d("dataToView", receivedSeason.toString());
         if (receivedSeason != null) {
@@ -57,6 +58,7 @@ public class SeasonActivity extends AppCompatActivity {
                             mEpisodeAdapter = new EpisodeAdapter(episodesList);
                             mRecyclerView.setAdapter(mEpisodeAdapter);
                             Log.d(TAG, "onNext: "+episodesList.get(0).name);
+
 
 
                         }
