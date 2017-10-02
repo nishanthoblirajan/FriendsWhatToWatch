@@ -7,6 +7,8 @@
     android:orientation="vertical"
     tools:context="com.zaptrapp.friendswhattowatch.SeasonActivity">
     <android.support.v7.widget.RecyclerView
+        android:layout_margin="4dp"
+
         android:layout_width="match_parent"
         android:id="@+id/recyclerViewSeasons"
         android:layout_height="match_parent" />

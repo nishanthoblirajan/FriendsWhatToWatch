@@ -1,12 +1,20 @@
 package com.zaptrapp.friendswhattowatch;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.zaptrapp.friendswhattowatch.Adapter.CrewAdapter;
+import com.zaptrapp.friendswhattowatch.Adapter.GuestStarAdapter;
 import com.zaptrapp.friendswhattowatch.Model.EpisodeInfo;
 import com.zaptrapp.friendswhattowatch.Model.SeasonInfo;
 import com.zaptrapp.friendswhattowatch.RetroFit.ApiClient;
@@ -27,8 +35,16 @@ public class EpisodeActivity extends AppCompatActivity {
 
     private TextView episodeName;
     private TextView episodeOverview;
-    private ImageView episodePhoto;
     private TextView episodeReference;
+    private AppBarLayout appbar;
+    private ImageView appBarImage;
+    private Toolbar toolbar;
+    private RecyclerView crewRecyclerView;
+    private CrewAdapter crewAdapter;
+    private GuestStarAdapter guestStarAdapter;
+    private RecyclerView guestStarRecyclerView;
+    private LinearLayout guestStartLayout;
+    private LinearLayout crewLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +53,9 @@ public class EpisodeActivity extends AppCompatActivity {
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         initView();
+
+        crewRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        guestStarRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         dataToView();
 
     }
@@ -44,8 +63,14 @@ public class EpisodeActivity extends AppCompatActivity {
     private void initView() {
         episodeName = (TextView) findViewById(R.id.episodeName);
         episodeOverview = (TextView) findViewById(R.id.episodeOverview);
-        episodePhoto = (ImageView) findViewById(R.id.episodePhoto);
         episodeReference = (TextView) findViewById(R.id.episodeReference);
+        appbar = (AppBarLayout) findViewById(R.id.appbar);
+        appBarImage = (ImageView) findViewById(R.id.app_bar_image);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        crewRecyclerView = (RecyclerView) findViewById(R.id.crewRecyclerView);
+        guestStarRecyclerView = (RecyclerView) findViewById(R.id.guestStarRecyclerView);
+        guestStartLayout = (LinearLayout) findViewById(R.id.guestStartLayout);
+        crewLayout = (LinearLayout) findViewById(R.id.crewLayout);
     }
 
     public static final String TAG = "EpisodeActivity";
@@ -75,7 +100,22 @@ public class EpisodeActivity extends AppCompatActivity {
                         episodeName.setText(episodeInfo.name);
                         episodeOverview.setText(episodeInfo.overview);
                         episodeReference.setText(episodeInfo.season_number + "x" + episodeInfo.episode_number);
-                        Glide.with(getApplicationContext()).load(IMAGE_URL_BASE + episodeInfo.still_path).into(episodePhoto);
+                        Glide.with(getApplicationContext()).load(IMAGE_URL_BASE + episodeInfo.still_path).into(appBarImage);
+
+                        if (!(episodeInfo.crew.size()==0)) {
+                            //setting up crew adapter
+                            crewAdapter = new CrewAdapter(episodeInfo.crew);
+                            crewRecyclerView.setAdapter(crewAdapter);
+                        } else {
+                            crewLayout.setVisibility(View.GONE);
+                        }
+                        if (!(episodeInfo.guest_stars.size()==0)) {
+                            //setting up guest stars adapter
+                            guestStarAdapter = new GuestStarAdapter(episodeInfo.guest_stars);
+                            guestStarRecyclerView.setAdapter(guestStarAdapter);
+                        } else {
+                            guestStartLayout.setVisibility(View.GONE);
+                        }
 
                     }
 

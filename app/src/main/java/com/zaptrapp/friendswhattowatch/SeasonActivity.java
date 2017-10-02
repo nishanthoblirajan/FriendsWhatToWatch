@@ -36,7 +36,7 @@ public class SeasonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_season);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewSeasons);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, Utils.calculateNoOfColumns(this)));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         getEpisodeList();
     }
